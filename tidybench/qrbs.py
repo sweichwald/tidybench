@@ -9,6 +9,7 @@ import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.utils import resample
 
+
 def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600):
     """
     Perform bootstrapped ridge regression of data at time t on data in the past
