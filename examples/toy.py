@@ -33,6 +33,6 @@ if __name__ == "__main__":
     print('True adjacency matrix:')
     print(A)
 
-    print('Score matrix for the adjacency matrix as inferred by'
+    print('Score matrix for the adjacency matrix as inferred by '
           'slarac (post_standardised):')
     print(tidybench.slarac(X, post_standardise=True).round(2))
