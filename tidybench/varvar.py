@@ -1,7 +1,9 @@
 """
-Implements the SLARAC (Subsampled Linear Auto-Regression Absolute Coefficients) and LASAR (LASso Auto-Regression) algorithms.
+Implements the SLARAC (Subsampled Linear Auto-Regression Absolute
+Coefficients) and LASAR (LASso Auto-Regression) algorithms.
 
-Based on an implementation that is originally due to Sebastian Weichwald (sweichwald).
+Based on an implementation that is originally due to Sebastian Weichwald
+(sweichwald).
 """
 
 
