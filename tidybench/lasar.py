@@ -14,16 +14,16 @@ from sklearn.utils import resample
 INV_GOLDEN_RATIO = 2 / (1 + np.sqrt(5))
 
 
-def varvar(data,
-           differences=False,
-           normalise=True,
-           maxlags=1,
-           speedup=False,
-           edgeprior=False,
-           aggregatelagmax=False,
-           zeroonescaling=True,
-           lasso=True,
-           **kwargscatchall):
+def lasar(data,
+          differences=False,
+          normalise=True,
+          maxlags=1,
+          speedup=False,
+          edgeprior=False,
+          aggregatelagmax=False,
+          zeroonescaling=True,
+          lasso=True,
+          **kwargscatchall):
     lags = maxlags
 
     timeconsecutivebootstrap = False

@@ -11,8 +11,14 @@ import numpy as np
 # compile selvar.f with:
 #    f2py -llapack -c -m selvar selvar.f
 ###
-from selvar import slvar, gtstat, gtcoef
-from scipy.stats import chi2
+try:
+    from selvarF import slvar, gtstat, gtcoef
+    from scipy.stats import chi2
+except ImportError:
+    slvar = None
+    gtstat = None
+    gtcoef = None
+    chi2 = None
 
 
 stats = ["DF", "LR", "FS"]
@@ -29,13 +35,16 @@ def interpnans(y):
     return y
 
 
-def my_method(data,
-              maxlags=1,
-              batchsize=-1,
-              score="default",
-              nrm=1,
-              mxitr=-1,
-              trace=0):
+def selvar(data,
+           maxlags=1,
+           batchsize=-1,
+           score="default",
+           nrm=1,
+           mxitr=-1,
+           trace=0):
+
+    if slvar is None:
+        raise RuntimeError("selvarF.f is not yet compiled")
 
     # replace missing values coded as 999
     data[data == 999] = np.nan

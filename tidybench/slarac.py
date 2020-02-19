@@ -15,7 +15,7 @@ from sklearn.utils import resample
 INV_GOLDEN_RATIO = 2 / (1 + np.sqrt(5))
 
 
-def varvar(data,
+def slarac(data,
            differences=False,
            normalise=True,
            maxlags=1,

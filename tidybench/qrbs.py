@@ -25,8 +25,8 @@ def handle_nans(data):
     return data
 
 
-def ridge(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600,
-          experiment=None):
+def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600,
+         experiment=None):
     """
     Perform bootstrapped ridge regression of data at time t on data in the past
 
