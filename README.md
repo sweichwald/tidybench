@@ -11,7 +11,7 @@ which came in first in 18 and close second in 13 out of the 34 competition categ
 
 Feel free to use our algorithms (AGPL-3.0 license). In fact, we encourage their use as baseline benchmarks and guidance of future algorithmic and methodological developments for structure learning from time series.
 
-*Note*: We are currently in the progress of migrating and polishing the algorithms `QRBS`, `LASAR`, `SELVAR` from their original versions that we used in the competition to a standalone version in this repository.
+*Note*: We are currently still in the progress of migrating and polishing the algorithms `QRBS` and `SELVAR` from their original versions that we used in the competition to a standalone version in this repository.
 
 ## What you get
 

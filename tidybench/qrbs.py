@@ -17,9 +17,8 @@ def qrbs(data,
          lags=1,
          alpha=.005,
          q=.75,
-         normalise=False,
          n_resamples=600,
-         standardise_scores=False):
+         ):
     """
     Perform bootstrapped ridge regression of data at time t on data in the past
 
@@ -42,14 +41,12 @@ def qrbs(data,
         q = 1 corresponds to the max effect across samples, q = 0.5 to the
         median effect.
 
-    normalise : boolean
-        Whether or not the data should be pre-normalised.
-
-    standardise_scores : boolean
-        Whether or not to output raw scores or standardised ones
-
     n_resamples : int
         Number of bootstrap samples drawn
+
+    Arguments for the common pre-processing steps of the data and the common
+    post-processing steps of the scores are documented in
+    utils.common_pre_post_processing
 
     Returns
     ----------
