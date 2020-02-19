@@ -2,10 +2,6 @@ import numpy as np
 import tidybench
 
 
-def meancentre(X):
-    return X - X.mean()
-
-
 if __name__ == "__main__":
     """
     Generate time series data over three variables from a stable SVAR with
@@ -39,4 +35,4 @@ if __name__ == "__main__":
 
     print('Score matrix for the adjacency matrix as inferred by'
           'slarac (mean-centred):')
-    print(meancentre(tidybench.slarac(X)).round(2))
+    print(tidybench.slarac(X, post_standardise=True).round(2))

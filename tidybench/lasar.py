@@ -9,22 +9,18 @@ Based on an implementation that is originally due to Sebastian Weichwald
 import numpy as np
 from sklearn.linear_model import LassoLarsCV
 from sklearn.utils import resample
-from .utils import commonpreprocessing, commonpostprocessing
+from .utils import common_pre_post_processing
 
 
 INV_GOLDEN_RATIO = 2 / (1 + np.sqrt(5))
 
 
+@common_pre_post_processing
 def lasar(data,
           normalise=True,
           maxlags=1,
           speedup=False,
-          aggregatelagmax=False,
-          normalise_data=False,
-          standardise_scores=False):
-    data = commonpreprocessing(data,
-                               normalise_data=normalise_data)
-
+          aggregatelagmax=False):
     lags = maxlags
 
     # T timepoints, N variables
@@ -49,9 +45,6 @@ def lasar(data,
         scores = np.abs(scores.reshape(N, -1, N)).max(axis=1).T
     else:
         scores = np.abs(scores.reshape(N, -1, N)).sum(axis=1).T
-
-    scores = commonpostprocessing(scores,
-                                  standardise_scores=standardise_scores)
     return scores
 
 

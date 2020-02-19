@@ -8,8 +8,10 @@ Based on an implementation that is originally due to Nikolaj Thams
 import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.utils import resample
-from .utils import common_preprocessing, common_postprocessing
+from .utils import common_pre_post_processing
 
+
+@common_pre_post_processing
 def qrbs(data, lags=1, alpha=.005, q=.75, normalise=False, n_resamples=600,
          standardise_scores=False):
     """
@@ -46,12 +48,6 @@ def qrbs(data, lags=1, alpha=.005, q=.75, normalise=False, n_resamples=600,
         Array with scores for each link i -> j
     """
 
-    # Normalize the data to mean 0 and unit variance
-    data = common_preprocessing(data, normalise_data=normalise)
-    if normalise:
-        data -= data.mean(axis=0)
-        data /= np.sqrt(np.var(data, axis=0))
-
     # We regress y = data_t on X = data_[t-1, ..., t-lags]
     y = np.diff(data, axis=0)[lags-1:]
     X = np.concatenate([data[lag:-(lags-lag)]
@@ -70,9 +66,6 @@ def qrbs(data, lags=1, alpha=.005, q=.75, normalise=False, n_resamples=600,
     results = np.abs(
         results.reshape(n_resamples, y.shape[1], lags, -1)).sum(axis=2)
     scores = np.quantile(results, q, axis=0)
-
-    scores = common_postprocessing(scores,
-                                  standardise_scores=standardise_scores)
     # Return transposed scores because ridge default beta*X means you can read
     # parents by row. Instead by transposing, the parents of i are in column i
     return scores.T
