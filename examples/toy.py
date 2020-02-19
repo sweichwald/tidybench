@@ -34,5 +34,5 @@ if __name__ == "__main__":
     print(A)
 
     print('Score matrix for the adjacency matrix as inferred by'
-          'slarac (mean-centred):')
+          'slarac (post_standardised):')
     print(tidybench.slarac(X, post_standardise=True).round(2))

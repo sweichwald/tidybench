@@ -25,7 +25,7 @@ More details can be found in a soon-to-appear preprint and the respective well-d
 
 ## Example
 
-Coming soon.
+At the moment, only a [toy example](examples/toy.py) is provided.
 
 
 ## Requirements
