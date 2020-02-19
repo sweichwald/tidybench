@@ -9,31 +9,25 @@ Based on an implementation that is originally due to Sebastian Weichwald
 import numpy as np
 from sklearn.linear_model import LassoLarsCV
 from sklearn.utils import resample
+from .utils import commonpreprocessing, commonpostprocessing
 
 
 INV_GOLDEN_RATIO = 2 / (1 + np.sqrt(5))
 
 
 def lasar(data,
-          differences=False,
           normalise=True,
           maxlags=1,
           speedup=False,
-          edgeprior=False,
           aggregatelagmax=False,
-          zeroonescaling=True,
-          lasso=True,
-          **kwargscatchall):
+          normalise_data=False,
+          standardise_scores=False):
+    data = commonpreprocessing(data,
+                               normalise_data=normalise_data)
+
     lags = maxlags
 
     timeconsecutivebootstrap = False
-
-    if differences:
-        data = np.diff(data, axis=0)
-
-    if normalise:
-        data -= data.mean(axis=0, keepdims=True)
-        data /= data.std(axis=0, keepdims=True)
 
     # T timepoints, N variables
     T, N = data.shape
@@ -42,24 +36,23 @@ def lasar(data,
     if speedup:
         noofshifts = 62
 
-    if lasso:
-        scores = np.abs(lassovar(data, lags))
-        Ps = [INV_GOLDEN_RATIO] + \
-            [INV_GOLDEN_RATIO**(1 / k) for k in [2, 3, 6]]
-        if speedup:
-            Ps = [INV_GOLDEN_RATIO**(1 / k) for k in [2, 3]]
-        for samples_p in Ps:
-            samples = int(np.round(samples_p * T))
-            if timeconsecutivebootstrap:
-                shifts = np.arange(T - samples + 1)
-                if len(shifts > noofshifts):
-                    shifts = np.random.permutation(shifts)[:noofshifts]
-                for shift in shifts:
-                    scores += np.abs(
-                        lassovar(data[shift:shift + samples, :], lags))
-            else:
-                for _ in range(noofshifts):
-                    scores += np.abs(lassovar(data, lags, n_samples=samples))
+    scores = np.abs(lassovar(data, lags))
+    Ps = [INV_GOLDEN_RATIO] + \
+        [INV_GOLDEN_RATIO**(1 / k) for k in [2, 3, 6]]
+    if speedup:
+        Ps = [INV_GOLDEN_RATIO**(1 / k) for k in [2, 3]]
+    for samples_p in Ps:
+        samples = int(np.round(samples_p * T))
+        if timeconsecutivebootstrap:
+            shifts = np.arange(T - samples + 1)
+            if len(shifts > noofshifts):
+                shifts = np.random.permutation(shifts)[:noofshifts]
+            for shift in shifts:
+                scores += np.abs(
+                    lassovar(data[shift:shift + samples, :], lags))
+        else:
+            for _ in range(noofshifts):
+                scores += np.abs(lassovar(data, lags, n_samples=samples))
 
     # aggregate lagged coefficients to square connectivity matrix
     if aggregatelagmax:
@@ -67,12 +60,8 @@ def lasar(data,
     else:
         scores = np.abs(scores.reshape(N, -1, N)).sum(axis=1).T
 
-    if zeroonescaling:
-        scores = (scores - scores.min()) / (scores.max() - scores.min())
-
-    if edgeprior:
-        scores /= np.mean(scores.reshape(-1))
-
+    scores = commonpostprocessing(scores,
+                                  standardise_scores=standardise_scores)
     return scores
 
 
