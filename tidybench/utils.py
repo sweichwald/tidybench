@@ -1,4 +1,4 @@
-def commonpreprocessing(data,
+def common_preprocessing(data,
                         normalise_data=False):
     if normalise_data:
         data -= data.mean(axis=0, keepdims=True)
@@ -7,7 +7,7 @@ def commonpreprocessing(data,
     return data
 
 
-def commonpostprocessing(scores,
+def common_postprocessing(scores,
                          standardise_scores=False):
     if standardise_scores:
         scores -= scores.mean()

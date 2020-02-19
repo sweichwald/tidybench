@@ -9,7 +9,7 @@ Based on an implementation that is originally due to Sebastian Weichwald
 
 import numpy as np
 from sklearn.utils import resample
-from .utils import commonpreprocessing, commonpostprocessing
+from .utils import common_preprocessing, common_postprocessing
 
 
 INV_GOLDEN_RATIO = 2 / (1 + np.sqrt(5))
@@ -21,7 +21,7 @@ def slarac(data,
            aggregatelagmax=False,
            normalise_data=False,
            standardise_scores=False):
-    data = commonpreprocessing(data,
+    data = common_preprocessing(data,
                                normalise_data=normalise_data)
 
     lags = maxlags
@@ -60,7 +60,7 @@ def slarac(data,
     else:
         scores = np.abs(scores.reshape(N, -1, N)).sum(axis=1).T
 
-    scores = commonpostprocessing(scores,
+    scores = common_postprocessing(scores,
                                   standardise_scores=standardise_scores)
     return scores
 
