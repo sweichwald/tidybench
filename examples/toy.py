@@ -36,3 +36,7 @@ if __name__ == "__main__":
     print('Score matrix for the adjacency matrix as inferred by '
           'slarac (post_standardised):')
     print(tidybench.slarac(X, post_standardise=True).round(2))
+
+    print('Score matrix for the adjacency matrix as inferred by '
+          'qrbs (post_standardised):')
+    print(tidybench.qrbs(X, post_standardise=True).round(2))

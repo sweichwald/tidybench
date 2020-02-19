@@ -5,6 +5,7 @@ Based on an implementation that is originally due to Nikolaj Thams
 (nikolajthams).
 """
 
+
 import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.utils import resample
@@ -12,13 +13,21 @@ from .utils import common_pre_post_processing
 
 
 @common_pre_post_processing
-def qrbs(data, lags=1, alpha=.005, q=.75, normalise=False, n_resamples=600,
+def qrbs(data,
+         lags=1,
+         alpha=.005,
+         q=.75,
+         normalise=False,
+         n_resamples=600,
          standardise_scores=False):
     """
     Perform bootstrapped ridge regression of data at time t on data in the past
 
     Parameters
     ----------
+    data : ndarray
+        T (timepoints) x N (variables) input data
+
     lags : int
         Number of lags to include in the modelling
 
