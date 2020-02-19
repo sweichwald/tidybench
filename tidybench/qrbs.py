@@ -8,9 +8,10 @@ Based on an implementation that is originally due to Nikolaj Thams
 import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.utils import resample
+from .utils import common_preprocessing, common_postprocessing
 
-
-def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600):
+def qrbs(data, lags=1, alpha=.005, q=.75, normalise=False, n_resamples=600,
+         standardise_scores=False):
     """
     Perform bootstrapped ridge regression of data at time t on data in the past
 
@@ -30,8 +31,11 @@ def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600):
         q = 1 corresponds to the max effect across samples, q = 0.5 to the
         median effect.
 
-    normalize : boolean
-        Whether or not the data should be pre-normalized.
+    normalise : boolean
+        Whether or not the data should be pre-normalised.
+
+    standardise_scores : boolean
+        Whether or not to output raw scores or standardised ones
 
     n_resamples : int
         Number of bootstrap samples drawn
@@ -43,7 +47,8 @@ def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600):
     """
 
     # Normalize the data to mean 0 and unit variance
-    if normalize:
+    data = common_preprocessing(data, normalise_data=normalise)
+    if normalise:
         data -= data.mean(axis=0)
         data /= np.sqrt(np.var(data, axis=0))
 
@@ -66,10 +71,8 @@ def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600):
         results.reshape(n_resamples, y.shape[1], lags, -1)).sum(axis=2)
     scores = np.quantile(results, q, axis=0)
 
-    # Normalize scores to the [0, 1] interval
-    scores -= scores.min()
-    scores /= scores.max()
-
+    scores = common_postprocessing(scores,
+                                  standardise_scores=standardise_scores)
     # Return transposed scores because ridge default beta*X means you can read
     # parents by row. Instead by transposing, the parents of i are in column i
     return scores.T
