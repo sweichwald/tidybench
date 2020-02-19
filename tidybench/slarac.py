@@ -8,7 +8,6 @@ Based on an implementation that is originally due to Sebastian Weichwald
 
 
 import numpy as np
-from sklearn.linear_model import LassoLarsCV
 from sklearn.utils import resample
 
 
