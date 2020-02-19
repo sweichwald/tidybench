@@ -26,8 +26,6 @@ def slarac(data,
 
     lags = maxlags
 
-    timeconsecutivebootstrap = False
-
     # T timepoints, N variables
     T, N = data.shape
 
@@ -42,16 +40,8 @@ def slarac(data,
         Ps = [INV_GOLDEN_RATIO**(1 / k) for k in [2, 3]]
     for samples_p in Ps:
         samples = int(np.round(samples_p * T))
-        if timeconsecutivebootstrap:
-            shifts = np.arange(T - samples + 1)
-            if len(shifts > noofshifts):
-                shifts = np.random.permutation(shifts)[:noofshifts]
-            for shift in shifts:
-                scores += np.abs(
-                    varmodel(data[shift:shift + samples, :], lags))
-        else:
-            for _ in range(noofshifts):
-                scores += np.abs(varmodel(data, lags, n_samples=samples))
+        for _ in range(noofshifts):
+            scores += np.abs(varmodel(data, lags, n_samples=samples))
     scores = scores[:, 1:]
 
     # aggregate lagged coefficients to square connectivity matrix
