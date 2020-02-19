@@ -1,6 +1,6 @@
 """
 Implements the SLARAC (Subsampled Linear Auto-Regression Absolute
-Coefficients) and LASAR (LASso Auto-Regression) algorithms.
+Coefficients) algorithm.
 
 Based on an implementation that is originally due to Sebastian Weichwald
 (sweichwald).
@@ -63,25 +63,6 @@ def varvar(data,
                     scores += np.abs(varmodel(data, lags, n_samples=samples))
         scores = scores[:, 1:]
 
-    else:
-        scores = np.abs(lassovar(data, lags))
-        Ps = [INV_GOLDEN_RATIO] + \
-            [INV_GOLDEN_RATIO**(1 / k) for k in [2, 3, 6]]
-        if speedup:
-            Ps = [INV_GOLDEN_RATIO**(1 / k) for k in [2, 3]]
-        for samples_p in Ps:
-            samples = int(np.round(samples_p * T))
-            if timeconsecutivebootstrap:
-                shifts = np.arange(T - samples + 1)
-                if len(shifts > noofshifts):
-                    shifts = np.random.permutation(shifts)[:noofshifts]
-                for shift in shifts:
-                    scores += np.abs(
-                        lassovar(data[shift:shift + samples, :], lags))
-            else:
-                for _ in range(noofshifts):
-                    scores += np.abs(lassovar(data, lags, n_samples=samples))
-
     # aggregate lagged coefficients to square connectivity matrix
     if aggregatelagmax:
         scores = np.abs(scores.reshape(N, -1, N)).max(axis=1).T
@@ -95,48 +76,6 @@ def varvar(data,
         scores /= np.mean(scores.reshape(-1))
 
     return scores
-
-
-def lassovar(data, lag=1, n_samples=None):
-    Y = data.T[:, lag:]
-    d = Y.shape[0]
-    Z = np.vstack([data.T[:, lag - k:-k]
-                   for k in range(1, lag + 1)])
-    Y, Z = Y.T, Z.T
-    if n_samples is not None:
-        Y, Z = resample(Y, Z, replace=False, n_samples=n_samples)
-
-    scores = np.zeros((d, d * lag))
-
-    ls = LassoLarsCV(cv=10, n_jobs=1)
-
-    residuals = np.zeros(Y.shape)
-
-    # one variable after the other as target
-    for j in range(d):
-        target = np.copy(Y[:, j])
-        selectedparents = np.full(d * lag, False)
-        # we include one lag after the other
-        for l in range(1, lag + 1):
-            ind_a = d * (l - 1)
-            ind_b = d * l
-            ls.fit(Z[:, ind_a:ind_b], target)
-            selectedparents[ind_a:ind_b] = ls.coef_ > 0
-            target -= ls.predict(Z[:, ind_a:ind_b])
-
-        residuals[:, j] = np.copy(target)
-
-        # refit to get rid of the bias
-        ZZ = Z[:, selectedparents]
-        B = np.linalg.lstsq(ZZ.T.dot(ZZ), ZZ.T.dot(Y[:, j]), rcond=None)[0]
-        scores[j, selectedparents] = B
-
-    # the more uncorrelated the residuals the higher the weight
-    weight = 1
-    res = np.corrcoef(residuals.T)
-    if np.linalg.matrix_rank(res) == res.shape[0]:
-        weight = np.linalg.det(res)
-    return scores * weight
 
 
 def varmodel(data, lag=1, n_samples=None):
