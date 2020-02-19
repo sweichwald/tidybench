@@ -9,24 +9,7 @@ import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.utils import resample
 
-
-def handle_nans(data):
-    # Function for linearly interpolating NAs
-    def interpnans(y):
-        nans = np.isnan(y)
-        def x(z): return z.nonzero()[0]
-        y[nans] = np.interp(x(nans), x(~nans), y[~nans])
-        return y
-
-    # Re-code NAs and linearly interpolate
-    data[data == 999] = np.nan
-    for j in range(data.shape[1]):
-        data[:, j] = interpnans(data[:, j])
-    return data
-
-
-def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600,
-         experiment=None):
+def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600):
     """
     Perform bootstrapped ridge regression of data at time t on data in the past
 
@@ -52,18 +35,11 @@ def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600,
     n_resamples : int
         Number of bootstrap samples drawn
 
-    experiment : str
-        The experiment name (e.g. TestCLIM_N-5_T-100).
-        Only used for automatically handling missing data in the
-        TestWEATHmiss datasets
-
     Returns
     ----------
     scores : ndarray
         Array with scores for each link i -> j
     """
-    if 'miss' in experiment:
-        data = handle_nans(data)
 
     # Normalize the data to mean 0 and unit variance
     if normalize:
@@ -92,8 +68,7 @@ def qrbs(data, lags=1, alpha=.005, q=.75, normalize=False, n_resamples=600,
     # Normalize scores to the [0, 1] interval
     scores -= scores.min()
     scores /= scores.max()
-    scores /= scores.mean()
 
-    # Return transposed scores because our format beta*X means you can read
-    # parents by row but CauseMe reads parents of i in column i
+    # Return transposed scores because ridge default beta*X means you can read
+    # parents by row. Instead by transposing, the parents of i are in column i
     return scores.T
