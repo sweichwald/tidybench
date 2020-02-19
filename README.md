@@ -27,6 +27,12 @@ More details can be found in a soon-to-appear preprint and the respective well-d
 Coming soon.
 
 
+## Requirements
+
+`QRBS`, `SLARAC`, and `LASAR` require numpy and sklearn. These requirements are listed in the [requirements.txt](requirements.txt) and can be installed via `pip install -r requirements.txt`.
+
+`SELVAR` requires numpy, scipy, and compilation of [selvar.f](tidybench/selvar.f).
+
 ## Who we are
 
 We are a team of PhD students and Postdocs that formed at the [Copenhagen Causality Lab (CoCaLa)](https://math.ku.dk/cocala) of the University of Copenhagen ([Martin E Jakobsen](https://www.math.ku.dk/english/research/spt/cocala/?pure=en/persons/410383), [Phillip B Mogensen](https://www.math.ku.dk/english/staff/?pure=en/persons/467826), [Lasse Petersen](https://www.math.ku.dk/english/research/spt/cocala/?pure=en/persons/433485), [Nikolaj Thams](https://nikolajthams.github.io/), [Gherardo Varando](https://gherardovarando.github.io/), [Sebastian Weichwald](https://sweichwald.de)) to participate in the C4C competition.
