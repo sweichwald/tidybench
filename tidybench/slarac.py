@@ -90,7 +90,7 @@ def varmodel(data, maxlags=1, n_samples=None, missing_values=None):
 
     # Subsample data
     if n_samples is not None:
-        Y, Z = resample(Y.T, Z.T, replace=False, n_samples=n_samples)
+        Y, Z = resample(Y.T, Z.T, n_samples=n_samples)
         Y, Z = Y.T, Z.T
 
     # Missing value treatment

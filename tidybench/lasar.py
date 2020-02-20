@@ -89,7 +89,7 @@ def lassovar(data, maxlags=1, n_samples=None, cv=5):
 
     # Subsample data
     if n_samples is not None:
-        Y, Z = resample(Y, Z, replace=False, n_samples=n_samples)
+        Y, Z = resample(Y, Z, n_samples=n_samples)
 
     scores = np.zeros((d, d * maxlags))
 
