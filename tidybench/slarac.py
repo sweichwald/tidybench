@@ -20,7 +20,8 @@ def slarac(data,
            maxlags=1,
            n_subsamples=50,
            subsample_sizes=[INV_GOLDEN_RATIO**(1 / k) for k in [1, 2, 3, 6]],
-           aggregate_lags=lambda x: x.max(axis=1),
+           missing_values=None,
+           aggregate_lags=lambda x: x.max(axis=1).T,
            ):
     """SLARAC (Subsampled Linear Auto-Regression Absolute Coefficients).
 
@@ -38,13 +39,17 @@ def slarac(data,
     subsample_sizes : ndarray
         Possible sizes of the subsamples as fractions
 
+    missing_values : float
+        Values in the data matrix that equal missing_values are treated as
+        missing values
+
     aggregate_lags : function
         Function that takes an N (to) x maxlags x N (from) ndarray as input and
         outputs an N x N ndarray aggregating the lag-resolved scores,
         for example
-            lambda x: x.max(axis=1)
+            lambda x: x.max(axis=1).T
         or
-            lambda x: x.sum(axis=1)
+            lambda x: x.sum(axis=1).T
 
     Arguments for the common pre-processing steps of the data and the common
     post-processing steps of the scores are documented in
@@ -61,20 +66,21 @@ def slarac(data,
 
     # Obtain absolute regression coefficients on the entire data set and
     # random subsamples
-    scores = np.abs(varmodel(data, maxlags))
+    scores = np.abs(varmodel(data, maxlags, missing_values=missing_values))
     for subsample_size in np.random.choice(subsample_sizes, n_subsamples):
         n_samples = int(np.round(subsample_size * T))
-        scores += np.abs(varmodel(data, maxlags, n_samples=n_samples))
+        scores += np.abs(varmodel(
+            data, maxlags, n_samples=n_samples, missing_values=missing_values))
 
     # Drop the intercepts and divide the sum to obtain the average
     scores = scores[:, 1:] / (n_subsamples + 1)
 
     # Aggregate lagged coefficients to square connectivity matrix
-    scores = aggregate_lags(scores.reshape(N, -1, N)).T
+    scores = aggregate_lags(scores.reshape(N, -1, N))
     return scores
 
 
-def varmodel(data, maxlags=1, n_samples=None):
+def varmodel(data, maxlags=1, n_samples=None, missing_values=None):
     # Stack data to perform regression of present on past values
     Y = data.T[:, maxlags:]
     d = Y.shape[0]
@@ -86,6 +92,13 @@ def varmodel(data, maxlags=1, n_samples=None):
     if n_samples is not None:
         Y, Z = resample(Y.T, Z.T, replace=False, n_samples=n_samples)
         Y, Z = Y.T, Z.T
+
+    # Missing value treatment
+    if missing_values is not None:
+        keepinds = (np.sum(Y == missing_values, axis=0)
+                    + np.sum(Z == missing_values, axis=0)) == 0
+        Y = Y[:, keepinds]
+        Z = Z[:, keepinds]
 
     # Heuristic to determine a feasible number of lags
     feasiblelag = maxlags

@@ -21,7 +21,7 @@ def lasar(data,
           n_subsamples=50,
           subsample_sizes=[INV_GOLDEN_RATIO**(1 / k) for k in [1, 2, 3, 6]],
           cv=5,
-          aggregate_lags=lambda x: x.max(axis=1),
+          aggregate_lags=lambda x: x.max(axis=1).T,
           ):
     """LASAR (LASso Auto-Regression).
 
@@ -46,9 +46,9 @@ def lasar(data,
         Function that takes an N (to) x maxlags x N (from) ndarray as input and
         outputs an N x N ndarray aggregating the lag-resolved scores,
         for example
-            lambda x: x.max(axis=1)
+            lambda x: x.max(axis=1).T
         or
-            lambda x: x.sum(axis=1)
+            lambda x: x.sum(axis=1).T
 
     Arguments for the common pre-processing steps of the data and the common
     post-processing steps of the scores are documented in
@@ -75,7 +75,7 @@ def lasar(data,
     scores /= (n_subsamples + 1)
 
     # aggregate lagged coefficients to square connectivity matrix
-    scores = aggregate_lags(scores.reshape(N, -1, N)).T
+    scores = aggregate_lags(scores.reshape(N, -1, N))
     return scores
 
 
