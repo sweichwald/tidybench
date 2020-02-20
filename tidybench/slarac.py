@@ -18,7 +18,7 @@ INV_GOLDEN_RATIO = 2 / (1 + np.sqrt(5))
 @common_pre_post_processing
 def slarac(data,
            maxlags=1,
-           n_subsamples=100,
+           n_subsamples=200,
            subsample_sizes=[INV_GOLDEN_RATIO**(1 / k) for k in [1, 2, 3, 6]],
            missing_values=None,
            aggregate_lags=lambda x: x.max(axis=1).T,

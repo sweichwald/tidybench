@@ -1,9 +1,9 @@
-# The **ti**me series **d**iscover**y** **bench**mark (tidybench)
+# *TI*me series *D*iscover*Y* *BENCH*mark (tidybench)
 
 This repository holds implementations of the following four algorithms for causal structure learning for time series,
 
-* `QRBS` (Quantiles of Ridge regressed Bootstrap Samples),
 * `SLARAC` (Subsampled Linear Auto-Regression Absolute Coefficients),
+* `QRBS` (Quantiles of Ridge regressed Bootstrap Samples),
 * `LASAR` (LASso Auto-Regression),
 * `SELVAR` (Selective auto-regressive model),
 
@@ -15,8 +15,9 @@ Feel free to use our algorithms (AGPL-3.0 license). In fact, we encourage their 
 
 ## What you get
 
-Input: time series data (and some method-specific parameters)
-Output: score matrix indicating which structural links are inferred likely to exist
+**Input**: time series data (and some method-specific parameters)
+
+**Output**: score matrix indicating which structural links are inferred likely to exist
 
 All four algorithms take as input multivariate time series data in form of a T x d matrix of T time samples of d variables and output a d x d score/adjacency matrix A. The (i,j)th entry corresponds to an edge from the i-th to the j-th time series component, where higher values correspond to edges that are inferred to be more likely to exist, given the observed data.
 
@@ -30,7 +31,7 @@ At the moment, only a [toy example](examples/toy.py) is provided.
 
 ## Requirements
 
-`QRBS`, `SLARAC`, and `LASAR` require numpy and sklearn. These requirements are listed in the [requirements.txt](requirements.txt) and can be installed via `pip install -r requirements.txt`.
+`SLARAC`, `QRBS`, and `LASAR` require numpy and sklearn. These requirements are listed in the [requirements.txt](requirements.txt) and can be installed via `pip install -r requirements.txt`.
 
 `SELVAR` requires numpy, scipy, and compilation of [selvarF.f](tidybench/selvarF.f).
 
