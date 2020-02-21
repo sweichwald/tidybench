@@ -44,3 +44,7 @@ if __name__ == "__main__":
     print('Score matrix for the adjacency matrix as inferred by '
           'lasar (post_standardised):')
     print(tidybench.lasar(X, post_standardise=True).round(2))
+
+    print('Score matrix for the adjacency matrix as inferred by '
+          'selvar (post_standardised):')
+    print(tidybench.selvar(X, post_standardise=True).round(2))
