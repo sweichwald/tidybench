@@ -66,7 +66,5 @@ def selvar(data,
 
     scores, lags, info = slvar(data, bs=int(batchsize), ml=int(maxlags),
                                mxitr=int(mxitr), trc=int(trace))
-    scores, df = gtstat(data, a=lags, bs=int(batchsize), ml=int(maxlags),
-                        job="DF")
 
     return scores
