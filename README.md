@@ -33,7 +33,9 @@ At the moment, only a [toy example](examples/toy.py) is provided.
 
 `SLARAC`, `QRBS`, and `LASAR` require numpy and sklearn. These requirements are listed in the [requirements.txt](requirements.txt) and can be installed via `pip install -r requirements.txt`.
 
-`SELVAR` requires numpy, scipy, and compilation of [selvarF.f](tidybench/selvarF.f).
+`SELVAR` requires lapack/blas installed and the compilation of 
+[selvarF.f](tidybench/selvarF.f) with [f2py](https://docs.scipy.org/doc/numpy/f2py/) 
+(e.g. `f2py -llapack -c -m selvarF selvarF.f`). 
 
 ## Who we are
 
