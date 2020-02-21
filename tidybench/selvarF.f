@@ -84,15 +84,17 @@ c        initialize the empty graph
             A(I,J) = 0
  10      CONTINUE
  20   CONTINUE           
-c     hill-climb search starts 
- 500  CONTINUE
-c     increase iteration counter
-      ITR = ITR + 1
-      FLG = 0
-      IF (ITML .GT. 0) ML = MIN(ML + 1, T / 2)
       DO 50 J=1,N 
+         ITR = 0
+         IF (ITML .GT. 0) ML = 1
+c        compute initial score (prss) for j
          CALL GTPRSS(T, N, X, ML, BS, A, J, XX, YY, WK, 
      *                SCR, INFO)
+c        hill-climb search start for j 
+ 500     CONTINUE
+c        increase iteration counter
+         ITR = ITR + 1
+         FLG = 0
          TMPSCR = SCR
          IBST = -1
          DO 40 K= 0,ML  
@@ -122,8 +124,9 @@ c     increase iteration counter
      *                                             " LAG=", KBST 
             ENDIF
          ENDIF     
- 50   CONTINUE        
+         IF (ITML .GT. 0) ML = MIN(ML + 1, T / 2)
       IF ((MXITR .LT. 0 .OR. ITR .LT. MXITR) .AND. FLG .GT. 0) GOTO 500
+ 50   CONTINUE        
  100  CONTINUE
       CALL GTCOEF(T, N, X, ML, BS, A, "", 1, XX, YY, WK, B,
      *             INFO)
