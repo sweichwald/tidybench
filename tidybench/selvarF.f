@@ -128,7 +128,7 @@ c        increase iteration counter
       IF ((MXITR .LT. 0 .OR. ITR .LT. MXITR) .AND. FLG .GT. 0) GOTO 500
  50   CONTINUE        
  100  CONTINUE
-      CALL GTCOEF(T, N, X, ML, BS, A, "ABS", 1, XX, YY, WK, B,
+      CALL GTCOEF(T, N, X, ML, BS, A, "ABS", 0, XX, YY, WK, B,
      *             INFO)
       MXITR = ITR
       RETURN
