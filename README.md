@@ -9,9 +9,12 @@ This repository holds implementations of the following four algorithms for causa
 
 which came in first in 18 and close second in 13 out of the 34 competition categories in the [Causality 4 Climate competition](https://causeme.uv.es/neurips2019/) at the Conference on Neural Information Processing Systems 2019 (NeurIPS). For details on the competition tasks and the outcomes you may watch the [recording of the NeurIPS session](https://slideslive.com/38922052/competition-track-day-21) or consult [the result slides](https://causeme.uv.es/neurips2019/static/img/Runge_NeurIPS_compressed.pdf).
 
-Feel free to use our algorithms (AGPL-3.0 license). In fact, we encourage their use as baseline benchmarks and guidance of future algorithmic and methodological developments for structure learning from time series.
+More details can be found in [this preprint](http://arxiv.org/abs/2002.09573) and the respective well-documented code files.
+
+Feel free to use our algorithms (AGPL-3.0 license). In fact, we encourage their use as baseline benchmarks and guidance of future algorithmic and methodological developments for structure learning from time series. We kindly ask you to cite above mentioned preprint in case you find our code useful.
 
 *Note*: We are currently still in the progress of migrating and polishing the algorithms `QRBS` and `SELVAR` from their original versions that we used in the competition to a standalone version in this repository.
+
 
 ## What you get
 
@@ -20,8 +23,6 @@ Feel free to use our algorithms (AGPL-3.0 license). In fact, we encourage their 
 **Output**: score matrix indicating which structural links are inferred likely to exist
 
 All four algorithms take as input multivariate time series data in form of a T x d matrix of T time samples of d variables and output a d x d score/adjacency matrix A. The (i,j)th entry corresponds to an edge from the i-th to the j-th time series component, where higher values correspond to edges that are inferred to be more likely to exist, given the observed data.
-
-More details can be found in a soon-to-appear preprint and the respective well-documented code files.
 
 
 ## Example
@@ -33,9 +34,9 @@ At the moment, only a [toy example](examples/toy.py) is provided.
 
 `SLARAC`, `QRBS`, and `LASAR` require numpy and sklearn. These requirements are listed in the [requirements.txt](requirements.txt) and can be installed via `pip install -r requirements.txt`.
 
-`SELVAR` requires lapack/blas installed and the compilation of 
-[selvarF.f](tidybench/selvarF.f) with [f2py](https://docs.scipy.org/doc/numpy/f2py/) 
-(e.g. `f2py -llapack -c -m selvarF selvarF.f`). 
+`SELVAR` requires lapack/blas installed and the compilation of
+[selvarF.f](tidybench/selvarF.f) with [f2py](https://docs.scipy.org/doc/numpy/f2py/)
+(e.g. `f2py -llapack -c -m selvarF selvarF.f`).
 
 ## Who we are
 
