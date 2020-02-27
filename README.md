@@ -8,6 +8,7 @@ This repository holds implementations of the following four algorithms for causa
 * `SELVAR` (Selective auto-regressive model),
 
 which came in first in 18 and close second in 13 out of the 34 competition categories in the [Causality 4 Climate competition](https://causeme.uv.es/neurips2019/) at the Conference on Neural Information Processing Systems 2019 (NeurIPS). For details on the competition tasks and the outcomes you may watch the [recording of the NeurIPS session](https://slideslive.com/38922052/competition-track-day-21) or consult [the result slides](https://causeme.uv.es/neurips2019/static/img/Runge_NeurIPS_compressed.pdf).
+(Algorithm names map as follows between `tidybench` and our competition implementations: `tidybench.slarac` was varvar, `tidybench.qrbs` was ridge, `tidybench.lasar` was varvar(lasso=True), and `tidybench.selvar` was selvar.)
 
 More details can be found in [this preprint](http://arxiv.org/abs/2002.09573) and the respective well-documented code files.
 
