@@ -10,11 +10,26 @@ This repository holds implementations of the following four algorithms for causa
 which came in first in 18 and close second in 13 out of the 34 competition categories in the [Causality 4 Climate competition](https://causeme.uv.es/neurips2019/) at the Conference on Neural Information Processing Systems 2019 (NeurIPS). For details on the competition tasks and the outcomes you may watch the [recording of the NeurIPS session](https://slideslive.com/38922052/competition-track-day-21) or consult [the result slides](https://causeme.uv.es/neurips2019/static/img/Runge_NeurIPS_compressed.pdf).
 (Algorithm names map as follows between `tidybench` and our competition implementations: `tidybench.slarac` was varvar, `tidybench.qrbs` was ridge, `tidybench.lasar` was varvar(lasso=True), and `tidybench.selvar` was selvar.)
 
-More details can be found in [this preprint](http://arxiv.org/abs/2002.09573) and the respective well-documented code files.
+More details can be found in our [accompanying paper](http://proceedings.mlr.press/v123/weichwald20a.html) and the respective well-documented code files.
 
-Feel free to use our algorithms (AGPL-3.0 license). In fact, we encourage their use as baseline benchmarks and guidance of future algorithmic and methodological developments for structure learning from time series. We kindly ask you to cite above mentioned preprint in case you find our code useful.
+Feel free to use our algorithms (AGPL-3.0 license). In fact, we encourage their use as baseline benchmarks and guidance of future algorithmic and methodological developments for structure learning from time series.
 
-*Note*: We are currently still in the progress of migrating and polishing the algorithms `QRBS` and `SELVAR` from their original versions that we used in the competition to a standalone version in this repository.
+We kindly ask you to cite our [accompanying paper](http://proceedings.mlr.press/v123/weichwald20a.html) in case you find our code useful:
+```
+@InProceedings{weichwald2020causal,
+  title = {{Causal structure learning from time series: Large regression coefficients may predict causal links better in practice than small p-values}},
+  author = {Weichwald, Sebastian and Jakobsen, Martin E. and Mogensen, Phillip B. and Petersen, Lasse and Thams, Nikolaj and Varando, Gherardo},
+  publisher = {PMLR},
+  series = {Proceedings of the NeurIPS 2019 Competition and Demonstration Track, Proceedings of Machine Learning Research},
+  volume = {123},
+  pages = {27--36},
+  year = {2020},
+  editor = {Hugo Jair Escalante and Raia Hadsell},
+  pdf = {http://proceedings.mlr.press/v123/weichwald20a/weichwald20a.pdf},
+  url = {http://proceedings.mlr.press/v123/weichwald20a.html},
+}
+```
+
 
 
 ## What you get
